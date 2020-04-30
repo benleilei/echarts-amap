@@ -51,6 +51,24 @@ AMapCoordSys.prototype.getRoamTransform = function () {
   return echarts.matrix.create();
 };
 
+AMapCoordSys.prototype.prepareCustoms = function (data) {
+  var rect = this.getViewRect();
+  return {
+    coordSys: {
+      // The name exposed to user is always 'cartesian2d' but not 'grid'.
+      type: 'amap',
+      x: rect.x,
+      y: rect.y,
+      width: rect.width,
+      height: rect.height
+    },
+    api: {
+      coord: zrUtil.bind(this.dataToPoint, this),
+      size: zrUtil.bind(dataToCoordSize, this)
+    }
+  };
+};
+
 var Overlay;
 
 // For deciding which dimensions to use when creating list data
